@@ -307,6 +307,7 @@ def convert_to_kicad(ee_symbol: EeSymbol, kicad_version: KicadVersion) -> KiSymb
         prefix=ee_symbol.info.prefix.replace("?", ""),
         package=ee_symbol.info.package,
         manufacturer=ee_symbol.info.manufacturer,
+        manufacturer_part_number=ee_symbol.info.manufacturer_part_number,
         datasheet=ee_symbol.info.datasheet,
         lcsc_id=ee_symbol.info.lcsc_id,
         jlc_id=ee_symbol.info.jlc_id,
@@ -368,10 +369,10 @@ class ExporterSymbolKicad:
             else logging.error("Unknown input symbol format")
         )
 
-    def export(self, footprint_lib_name: str) -> str:
+    def export(self, footprint_lib_name: str, lib_name: str) -> str:
 
         tune_footprint_ref_path(
             ki_symbol=self.output,
             footprint_lib_name=footprint_lib_name,
         )
-        return self.output.export(kicad_version=self.version)
+        return self.output.export(kicad_version=self.version, lib_name=lib_name)

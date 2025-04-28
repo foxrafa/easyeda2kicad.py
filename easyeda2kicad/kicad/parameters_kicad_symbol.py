@@ -137,6 +137,7 @@ class KiSymbolInfo:
     prefix: str
     package: str
     manufacturer: str
+    manufacturer_part_number: str
     datasheet: str
     lcsc_id: str
     jlc_id: str
@@ -246,12 +247,12 @@ class KiSymbolInfo:
                 hide="",
             ),
         ]
-        if self.package:
+        if self.manufacturer:
             field_offset_y += KiExportConfigV6.FIELD_OFFSET_INCREMENT.value
             header.append(
                 property_template.format(
-                    key="Footprint",
-                    value=self.package,
+                    key="Manufacturer",
+                    value=self.manufacturer,
                     id_=2,
                     pos_y=self.y_low - field_offset_y,
                     font_size=KiExportConfigV6.PROPERTY_FONT_SIZE.value,
@@ -259,52 +260,13 @@ class KiSymbolInfo:
                     hide="hide",
                 )
             )
-        if self.datasheet:
+        if self.manufacturer_part_number:
             field_offset_y += KiExportConfigV6.FIELD_OFFSET_INCREMENT.value
             header.append(
                 property_template.format(
-                    key="Datasheet",
-                    value=self.datasheet,
+                    key="Manufacturer Part Number",
+                    value=self.manufacturer_part_number,
                     id_=3,
-                    pos_y=self.y_low - field_offset_y,
-                    font_size=KiExportConfigV6.PROPERTY_FONT_SIZE.value,
-                    style="",
-                    hide="hide",
-                )
-            )
-        if self.manufacturer:
-            field_offset_y += KiExportConfigV6.FIELD_OFFSET_INCREMENT.value
-            header.append(
-                property_template.format(
-                    key="Manufacturer",
-                    value=self.manufacturer,
-                    id_=4,
-                    pos_y=self.y_low - field_offset_y,
-                    font_size=KiExportConfigV6.PROPERTY_FONT_SIZE.value,
-                    style="",
-                    hide="hide",
-                )
-            )
-        if self.lcsc_id:
-            field_offset_y += KiExportConfigV6.FIELD_OFFSET_INCREMENT.value
-            header.append(
-                property_template.format(
-                    key="LCSC Part",
-                    value=self.lcsc_id,
-                    id_=5,
-                    pos_y=self.y_low - field_offset_y,
-                    font_size=KiExportConfigV6.PROPERTY_FONT_SIZE.value,
-                    style="",
-                    hide="hide",
-                )
-            )
-        if self.jlc_id:
-            field_offset_y += KiExportConfigV6.FIELD_OFFSET_INCREMENT.value
-            header.append(
-                property_template.format(
-                    key="JLC Part",
-                    value=self.jlc_id,
-                    id_=6,
                     pos_y=self.y_low - field_offset_y,
                     font_size=KiExportConfigV6.PROPERTY_FONT_SIZE.value,
                     style="",
@@ -632,7 +594,7 @@ class KiSymbol:
             f" {sanitize_fields(self.info.name)}\n#\n{sym_info}{''.join(sym_graphic_items)}ENDDRAW\nENDDEF\n"
         )
 
-    def export_v6(self):
+    def export_v6(self, lib_name):
         sym_export_data = self.export_handler(kicad_version="6")
         sym_info = sym_export_data.pop("info")
         sym_pins = sym_export_data.pop("pins")
@@ -645,6 +607,15 @@ class KiSymbol:
               (in_bom yes)
               (on_board yes)
               {symbol_properties}
+              (property "Footprint" "{footprint}"
+                (at 0 17.78 0)
+                (effects
+                  (font
+                    (size 1.27 1.27)
+                  )
+                  (hide yes)
+                )
+              )
               (symbol "{library_id}_0_1"
                 {graphic_items}
                 {pins}
@@ -653,7 +624,8 @@ class KiSymbol:
             ),
             "  ",
         ).format(
-            library_id=sanitize_fields(self.info.name),
+            library_id=sanitize_fields(self.info.manufacturer_part_number),
+            footprint=lib_name+":"+sanitize_fields(self.info.manufacturer_part_number),
             symbol_properties=textwrap.indent(
                 textwrap.dedent("".join(sym_info)), "  " * 2
             ),
@@ -663,6 +635,6 @@ class KiSymbol:
             pins=textwrap.indent(textwrap.dedent("".join(sym_pins)), "  " * 3),
         )
 
-    def export(self, kicad_version: KicadVersion) -> str:
-        component_data = getattr(self, f"export_{kicad_version.name}")()
+    def export(self, kicad_version: KicadVersion, lib_name: str) -> str:
+        component_data = getattr(self, f"export_{kicad_version.name}")(lib_name)
         return re.sub(r"\n\s*\n", "\n", component_data, re.MULTILINE)
