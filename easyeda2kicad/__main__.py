@@ -333,7 +333,7 @@ def main(argv: List[str] = sys.argv[1:]) -> int:
             model_3d_path = "${KIPRJMOD}" + model_3d_path
 
         ki_footprint.export(
-            footprint_full_path=f"{footprint_path}/{cad_data["dataStr"]["head"]["c_para"]["Manufacturer Part"]}.kicad_sym",
+            footprint_full_path=f"{footprint_path}/{cad_data["dataStr"]["head"]["c_para"]["Manufacturer Part"]}.kicad_mod",
             model_3d_path=model_3d_path,
             manufacturer_part_number=cad_data["dataStr"]["head"]["c_para"]["Manufacturer Part"],
         )

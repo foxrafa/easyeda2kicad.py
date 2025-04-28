@@ -9,9 +9,7 @@ from typing import List
 # ---------------------------- FOOTPRINT PART ----------------------------
 
 KI_MODULE_INFO = "(module {package_lib}:{package_name} (layer F.Cu) (tedit {edit})\n"
-KI_DESCRIPTION = (
-    '\t(descr "{datasheet_link}, generated with easyeda2kicad.py on {date}")\n'
-)
+KI_DESCRIPTION = ("")
 KI_TAGS_INFO = '\t(tags "{tag}")\n'
 KI_FP_TYPE = "\t(attr {component_type})\n"
 KI_REFERENCE = (
@@ -19,8 +17,7 @@ KI_REFERENCE = (
     " (font (size 1 1) (thickness 0.15)))\n\t)\n"
 )
 KI_PACKAGE_VALUE = (
-    "\t(fp_text value {package_name} (at {pos_x} {pos_y}) (layer F.Fab)\n\t\t(effects"
-    " (font (size 1 1) (thickness 0.15)))\n\t)\n"
+    "\t(fp_text value val (hide yes) (layer F.Fab)\n\t)\n"
 )
 KI_FAB_REF = (
     "\t(fp_text user %R (at 0 0) (layer F.Fab)\n\t\t(effects (font (size 1 1)"
