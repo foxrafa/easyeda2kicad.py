@@ -370,9 +370,9 @@ class ExporterSymbolKicad:
         )
 
     def export(self, footprint_lib_name: str, lib_name: str) -> str:
-
         tune_footprint_ref_path(
             ki_symbol=self.output,
             footprint_lib_name=footprint_lib_name,
         )
+
         return self.output.export(kicad_version=self.version, lib_name=lib_name)

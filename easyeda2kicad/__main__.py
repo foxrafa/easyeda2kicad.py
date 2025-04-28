@@ -333,8 +333,9 @@ def main(argv: List[str] = sys.argv[1:]) -> int:
             model_3d_path = "${KIPRJMOD}" + model_3d_path
 
         ki_footprint.export(
-            footprint_full_path=f"{footprint_path}/{footprint_filename}",
+            footprint_full_path=f"{footprint_path}/{cad_data["dataStr"]["head"]["c_para"]["Manufacturer Part"]}.kicad_sym",
             model_3d_path=model_3d_path,
+            manufacturer_part_number=cad_data["dataStr"]["head"]["c_para"]["Manufacturer Part"],
         )
 
         logging.info(
@@ -350,7 +351,7 @@ def main(argv: List[str] = sys.argv[1:]) -> int:
                 easyeda_cp_cad_data=cad_data, download_raw_3d_model=True
             ).output
         )
-        exporter.export(lib_path=arguments["output"])
+        exporter.export(lib_path=arguments["output"], manufacturer_part_number=cad_data["dataStr"]["head"]["c_para"]["Manufacturer Part"])
         if exporter.output or exporter.output_step:
             filename_wrl = f"{exporter.output.name}.wrl"
             filename_step = f"{exporter.output.name}.step"

@@ -125,7 +125,7 @@ class Exporter3dModelKicad:
         )
         self.output_step = model_3d.step
 
-    def export(self, lib_path: str) -> None:
+    def export(self, lib_path: str, manufacturer_part_number: str) -> None:
         #if self.output:
             #with open(
                 #file=f"{lib_path}3D/{self.output.name}.wrl",
@@ -135,7 +135,7 @@ class Exporter3dModelKicad:
                 #my_lib.write(self.output.raw_wrl)
         if self.output_step:
             with open(
-                file=f"{lib_path}3D/{self.output.name}.step",
+                file=f"{lib_path}3D/{manufacturer_part_number}.step",
                 mode="wb",
             ) as my_lib:
                 my_lib.write(self.output_step)
