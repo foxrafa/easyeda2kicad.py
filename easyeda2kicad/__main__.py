@@ -303,8 +303,6 @@ def main(argv: List[str] = sys.argv[1:]) -> int:
 
         logging.info(
             f"Created Kicad symbol for ID : {component_id}\n"
-            f"       Symbol name : {easyeda_symbol.info.name}\n"
-            f"       Library path : {arguments['output']+arguments['libprefix']}.{sym_lib_ext}"
         )
 
     # ---------------- FOOTPRINT ----------------
@@ -340,8 +338,6 @@ def main(argv: List[str] = sys.argv[1:]) -> int:
 
         logging.info(
             f"Created Kicad footprint for ID: {component_id}\n"
-            f"       Footprint name: {easyeda_footprint.info.name}\n"
-            f"       Footprint path: {os.path.join(footprint_path, footprint_filename)}"
         )
 
     # ---------------- 3D MODEL ----------------
@@ -359,19 +355,6 @@ def main(argv: List[str] = sys.argv[1:]) -> int:
 
             logging.info(
                 f"Created 3D model for ID: {component_id}\n"
-                f"       3D model name: {exporter.output.name}\n"
-                + (
-                    "       3D model path (wrl):"
-                    f" {os.path.join(lib_path, filename_wrl)}\n"
-                    if filename_wrl
-                    else ""
-                )
-                + (
-                    "       3D model path (step):"
-                    f" {os.path.join(lib_path, filename_step)}\n"
-                    if filename_step
-                    else ""
-                )
             )
 
         # logging.info(f"3D model: {os.path.join(lib_path, filename)}")
